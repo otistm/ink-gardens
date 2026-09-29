@@ -1,6 +1,6 @@
 // Ink Gardens service worker: always tries the network first so updates show up right away,
 // and falls back to the last copy it saw so the game still opens with a weak connection.
-const CACHE = 'inkgardens-v1';
+const CACHE = 'inkgardens-v2';
 const CORE = ['/', '/play/', '/play/styles.css', '/play/js/config.js', '/play/js/data.js', '/play/js/core.js', '/play/js/online.js', '/play/js/audio.js',
   '/play/js/draw.js', '/play/js/garden.js', '/play/js/shop.js', '/play/js/screens.js',
   '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];

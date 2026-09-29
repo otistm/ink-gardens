@@ -1,6 +1,6 @@
 :root{
   --ink:#000; --paper:#fff; --mute:#7a7a7a; --faint:#d6d6d6;
-  --display:'Caprasimo','Georgia',serif; --ui:'Karla',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --display:"Fraunces",Georgia,serif;--ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   --spring:cubic-bezier(.34,1.56,.64,1);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -29,7 +29,7 @@ button{font-family:inherit;color:inherit}
 #mfill{display:block;height:100%;width:60%;background:var(--paper);border-right:2px solid var(--ink);transition:width .6s cubic-bezier(.3,1.5,.5,1)}
 .till{text-align:right;line-height:1;min-width:48px}
 .till small{display:block;font-size:11px;font-weight:800;color:var(--mute)}
-.till b{font-family:var(--display);font-weight:400;font-size:21px}
+.till b{font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:21px}
 
 /* customers on the rail */
 .rail{display:grid;grid-template-columns:repeat(var(--rails,3),1fr);gap:9px;height:clamp(112px,17vh,142px);margin-top:12px;flex:none}
@@ -50,12 +50,12 @@ button{font-family:inherit;color:inherit}
 .want{position:relative;display:inline-flex;align-items:flex-end;opacity:.38;transition:opacity .2s}
 .want.have{opacity:1}
 .want .ico{width:clamp(26px,8vw,34px);height:clamp(26px,8vw,34px)}
-.want b{font-family:var(--display);font-weight:400;font-size:14px;line-height:1;margin-left:-2px}
+.want b{font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:14px;line-height:1;margin-left:-2px}
 .pbar{height:8px;border:1.5px solid var(--ink);border-radius:5px;overflow:hidden;margin-top:4px;flex:none}
 .pbar i{display:block;height:100%;width:100%;background:var(--ink)}
 .slot-empty{border:2px dashed var(--faint);border-radius:8px}
 .stamp{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--paper) 72%,transparent);border-radius:6px}
-.stamp span{font-family:var(--display);font-size:16px;line-height:1.05;text-align:center;border:3px solid var(--ink);border-radius:8px;padding:6px 8px;transform:rotate(-11deg);background:var(--paper)}
+.stamp span{font-family:var(--display);font-style:italic;font-weight:900;letter-spacing:-.01em;font-size:16px;line-height:1.05;text-align:center;border:3px solid var(--ink);border-radius:8px;padding:6px 8px;transform:rotate(-11deg);background:var(--paper)}
 .stamp em{font-style:normal;font-size:15px;letter-spacing:1px}
 .gone .stamp span{transform:rotate(9deg);font-size:13px}
 
@@ -66,7 +66,7 @@ button{font-family:inherit;color:inherit}
 .bnone{font-size:13px;color:var(--mute)}
 .chip{display:inline-flex;align-items:center;gap:1px;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:1px 8px 1px 3px;flex:none}
 .chip .ico{width:26px;height:26px}
-.chip b{font-family:var(--display);font-weight:400;font-size:15px}
+.chip b{font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:15px}
 
 /* the garden */
 .garden{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(var(--rows,4),1fr);gap:7px;margin-top:10px}
@@ -106,7 +106,7 @@ button{font-family:inherit;color:inherit}
 .fly .ico{width:34px;height:34px;display:block;background:var(--paper);border-radius:50%}
 .drop{position:fixed;width:6px;height:9px;margin:-4px 0 0 -3px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--ink)}
 .puff{position:fixed;width:8px;height:8px;border-radius:50%;border:2px solid var(--ink);background:var(--paper)}
-.float{position:fixed;z-index:80;font-family:var(--display);font-size:20px;pointer-events:none;white-space:nowrap;transform:translate(-50%,-50%);text-shadow:0 0 3px var(--paper),0 0 3px var(--paper)}
+.float{position:fixed;z-index:80;font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:20px;pointer-events:none;white-space:nowrap;transform:translate(-50%,-50%);text-shadow:0 0 3px var(--paper),0 0 3px var(--paper)}
 .float.small{font-size:15px}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);transform:translate(-50%,20px);opacity:0;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:800;z-index:90;transition:.2s;pointer-events:none;max-width:calc(100vw - 24px);text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -116,7 +116,7 @@ button{font-family:inherit;color:inherit}
 .screen{position:fixed;inset:0;z-index:100;background:var(--paper);display:none;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 28px) 24px calc(env(safe-area-inset-bottom,0px) + 28px);touch-action:pan-y}
 .screen.show{display:flex}
 .sc{margin:auto;width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;text-align:center}
-.screen h1{font-family:var(--display);font-weight:400;font-size:clamp(42px,13vw,60px);line-height:.95;margin:.12em 0 .2em}
+.screen h1{font-family:var(--display);font-style:italic;font-weight:900;letter-spacing:-.01em;font-size:clamp(42px,13vw,60px);line-height:.95;margin:.12em 0 .2em}
 .screen h2{font-size:16px;font-weight:800;margin:0 0 8px}
 .tag{font-size:16px;line-height:1.4;margin:0 0 24px;max-width:28ch}
 .kick{font-size:14px;font-weight:800;color:var(--mute);margin:0}
@@ -135,18 +135,18 @@ button{font-family:inherit;color:inherit}
 .fresh>p{font-size:13px;font-weight:800;color:var(--mute);margin:0}
 .newp{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;text-align:left;border:2px solid var(--ink);border-radius:14px;padding:10px 12px;box-shadow:0 3px 0 var(--ink)}
 .newp .pk{width:48px;height:auto}
-.newp b{display:block;font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}
+.newp b{display:block;font-family:var(--display);font-style:italic;font-weight:900;letter-spacing:-.01em;font-size:20px;line-height:1.1}
 .newp span{display:block;font-size:14px;font-weight:400;line-height:1.35}
 .newp small{display:block;font-size:12px;font-weight:800;color:var(--mute);margin-top:3px}
 .stats{display:flex;gap:10px;justify-content:center;margin:10px 0 18px;width:100%}
 .stats div{flex:1;border:2px solid var(--ink);border-radius:12px;padding:10px 4px}
-.stats b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1}
+.stats b{display:block;font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:26px;line-height:1}
 .stats span{font-size:12px;font-weight:600;line-height:1.2;display:block;margin-top:4px}
 .bigmeter{width:100%;margin-bottom:22px}
 
 /* the seed shop between days */
 .till-big{font-size:16px;margin:0 0 16px}
-.till-big b{font-family:var(--display);font-weight:400;font-size:26px}
+.till-big b{font-family:var(--display);font-weight:900;font-variant-numeric:tabular-nums;font-size:26px}
 .buys{display:grid;gap:10px;width:100%;margin-bottom:18px}
 .buy{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;text-align:left;border:2px solid var(--ink);border-radius:14px;padding:10px 12px}
 .buy b{display:block;font-size:16px;font-weight:800}

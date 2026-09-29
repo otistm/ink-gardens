@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1
+- The lettering now matches the other ink games: Fraunces for titles and numbers, and Figtree for everything else.
+
 ## 0.1.0
 - First playable version. Nana left you her flower shop and the garden behind it, and Everbloom, a plastic flower superstore, just opened across the street. You have one week, Monday to Sunday, to win the street.
 - The garden is a grid of beds. One tap does the obvious thing: plant the seed you picked in the tray, water a thirsty plant, pick a flower in bloom, pull a weed or clear a dead plant.

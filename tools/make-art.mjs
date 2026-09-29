@@ -27,15 +27,15 @@ await png(icon(4), 48, 'icons/favicon-48.png');
 // The share image: a row of blooms beside the name.
 const row = [1, 0, 5].map((p, i) => `<svg viewBox="0 0 100 100" x="${i * 158}" width="210" height="210">${inner(p, 'bloom', 2.4)}</svg>`).join('');
 await page.setViewportSize({ width: 1200, height: 630 });
-await page.setContent(`<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Karla:wght@800&display=swap" rel="stylesheet">
+await page.setContent(`<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,900&family=Figtree:wght@800&display=swap" rel="stylesheet">
 <style>html,body{margin:0;background:#fff}.og{position:relative;width:1200px;height:630px;background:radial-gradient(circle,#000 1px,transparent 1.3px) 0 0/22px 22px}
 .og::before{content:'';position:absolute;inset:0;background:#fff;opacity:.86}
 .row{position:absolute;left:36px;top:190px}.card{position:absolute;right:60px;top:120px;width:500px;background:#fff;border:4px solid #000;border-radius:36px;box-shadow:10px 12px 0 #000;padding:40px 40px 44px}
-h1{font:400 84px/0.95 Caprasimo,Georgia,serif;margin:0}p{font:800 30px/1.3 Karla,sans-serif;margin:20px 0 0}</style>
+h1{font:italic 900 84px/0.95 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0}p{font:800 30px/1.3 Figtree,sans-serif;margin:20px 0 0}</style>
 <div class="og"><svg class="row" width="560" height="240" viewBox="0 0 560 240">${PAT}${row}</svg>
 <div class="card"><h1>Ink Gardens</h1><p>Grow flowers. Sell them fresh. Beat the plastic place across the street.</p></div></div>`);
 await page.waitForLoadState('networkidle');
-await page.evaluate(async () => { await document.fonts.load('84px Caprasimo'); await document.fonts.load('800 30px Karla'); await document.fonts.ready; });
+await page.evaluate(async () => { await document.fonts.load('italic 900 84px Fraunces'); await document.fonts.load('800 30px Figtree'); await document.fonts.ready; });
 await page.screenshot({ path: new URL('og-image.png', root).pathname });
 await browser.close();
 console.log('Wrote icons/ and og-image.png');

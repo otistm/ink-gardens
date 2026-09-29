@@ -68,7 +68,7 @@ Progress is kept in the browser's localStorage. An update must never wipe or bre
 
 ## Look and feel (keep it consistent)
 - Paper and ink only: white and black, with grey only for secondary text. Shading is hatching, dots and stripes, never color. Dark mode swaps paper and ink.
-- Fonts: Caprasimo (display) and Karla (UI, 400, 600 and 800). These are Ink Gardens' own; Ink Burger uses Bagel Fat One and Bricolage Grotesque.
+- Fonts: Fraunces for display and Figtree for the UI (400 to 800), the same pair as Ink Nine and the other ink games. Titles and headings are Fraunces italic 900; numbers (till, prices, counts, stats) are upright Fraunces 900 with even-width digits.
 - Plants draw in a 100 × 100 box with the soil at y 88 (`GROUND` in draw.js). New plants need a `case` in `plantBody` for bud and bloom, and an `ICON_BOX` crop.
 - Motion follows Disney's principles: squash and stretch, anticipation, follow-through, slow in and out. Blooms sway, thirsty plants droop.
 - Mobile first, portrait, one thumb. Respect safe areas and `prefers-reduced-motion`.
