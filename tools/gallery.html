@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Plant gallery</title>
+<style>:root{--ink:#000;--paper:#fff}body{margin:0;background:var(--paper);font:12px sans-serif}.g{display:grid;grid-template-columns:repeat(9,100px);gap:4px;padding:8px}.g div{border:1px solid #ddd;text-align:center}svg.plant{width:100px;height:100px}.ico{width:34px;height:34px}.pk{width:40px}.face{width:30px}</style>
+<svg width="0" height="0" style="position:absolute"><defs>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--paper)"/><line x1="0" y1="0" x2="0" y2="5" style="stroke:var(--ink);stroke-width:2.6"/></pattern>
+<pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" style="fill:var(--paper)"/><circle cx="3" cy="3" r="1.15" style="fill:var(--ink)"/></pattern>
+<pattern id="stripes" width="6" height="5" patternUnits="userSpaceOnUse"><rect width="6" height="5" style="fill:var(--paper)"/><line x1="0" y1="2.5" x2="6" y2="2.5" style="stroke:var(--ink);stroke-width:1.5"/></pattern></defs></svg>
+<div class="g" id="g"></div>
+<script src="../play/js/data.js"></script><script src="../play/js/draw.js"></script>
+<script>// Not part of the game: every plant at every stage, for checking drawings. Open at /tools/gallery.html
+let h='';PLANTS.forEach((P,p)=>{h+=`<div>${P.name}<br>${flowerIcon(p)}${packetSVG(p)}</div>`;['seed','sprout','bud','bloom','fade'].forEach(s=>h+=`<div>${bedSVG(p,s)}</div>`);h+=`<div>${bedSVG(p,'dead')}</div><div>${bedSVG(p,'weed')}</div><div>${faceSVG(p)}</div>`});g.innerHTML=h;</script>
