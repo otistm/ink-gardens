@@ -29,6 +29,7 @@ Otis is the designer. He doesn't read code. He judges changes by playing them on
 | draw.js | Ink SVG for every plant at every stage (`bedSVG`), flower icons, seed packets, customer faces |
 | garden.js | The beds: planting, watering, picking, weeds, dead plants, growth per frame (`tickGarden`), the seed tray, the bucket, little effects |
 | shop.js | Customers and their orders (`makeCustomer`), the rail, selling, walkouts, street meter, till, floating text, toasts |
+| tutorial.js | The soft opening: `TUT` steps, Nana's bubble (`bubble`, the reading ring and x), `coach(event)`, `startTutorial`, `finishTutorial` |
 | screens.js | The day flow (`newWeek`, `startShift`, `endShift`), Monday's hints, every screen (title, morning intro, closing time, seed shop, win, lose, pause), the main loop, `start()` |
 
 ## How it plays
@@ -42,18 +43,27 @@ Otis is the designer. He doesn't read code. He judges changes by playing them on
 - Weeds creep into empty beds from Tuesday on.
 - Monday shows a one-line hint above the seed tray until the player has watered, picked, sold and planted once.
 
+## The soft opening (tutorial)
+- A guided evening before Monday with Nana as coach. New players see Soft opening first on the title (with Skip to Monday); everyone else gets a quiet Play the soft opening button. Finishing or skipping sets `BEST.tutDone` and goes to Monday's intro.
+- It uses the normal garden with bare beds, and `S.tut` switches off the pressure: no customers except scripted ones (`tutCustomer`), no patience loss, no walkouts, plants never die and blooms never fade. It never saves a run.
+- The game reports moments with `coach(event)`: `plant`, `water`, `bloom`, `pick`, `sell`, `pull`, plus `tick` a few times a second.
+- Each step in `TUT` has `when` (the event that shows it), `until` (the event that moves on, or `next`/`finish` for explanations closed with the x), `target` (what gets the dashed ring), `pos` (`top` or `bottom`), `show` (set-up as it appears) and `ready` (true once the step is done anyway, so doing things out of order never leaves it stuck).
+- The bubble is Ink Crossing's: a reading ring fills for 2.6 to 7 seconds, then turns into an x. It lets taps through; only its buttons are tappable. Don't add Next or Got it buttons.
+- If you rename an element a step targets, or change when one of those events fires, update `TUT` and run `npm run tutorial`.
+
 ## Every change
 1. Work on a new branch, never directly on `main`.
 2. Bump `VERSION` in `play/js/config.js` (patch for fixes, minor for features) and add a line to `CHANGELOG.md` in plain language.
 3. Test:
    - `npm run check`: all scripts parse.
    - `npm run week`: a bot plays whole weeks at phone size with the clock run fast and fails on any error. `npm run week -- 5 human 1.1` plays at a person's pace (one tap every 1.1 s); use it after any balance change. At 0.7 s the bot should win comfortably, and at 1.1 s Saturday and Sunday should get tense.
+   - `npm run tutorial`: a bot plays the soft opening start to finish and fails if it gets stuck. `npm run tutorial -- shots` saves a screenshot of every tip in `screenshots/`.
    - Then run `python3 -m http.server` in the repo folder and open http://localhost:8000/play/ at a phone size (390 × 844). Online features only work over https, so locally feedback may say it isn't connected. That's expected.
 4. Push the branch and share the Vercel preview link with Otis. Merge to `main` only when he's happy.
 
 ## Protect players' saved progress
 Progress is kept in the browser's localStorage. An update must never wipe or break it.
-- `inkgardens`: `best` (`day`, `earned`, `till`, `won`) and `muted`.
+- `inkgardens`: `best` (`day`, `earned`, `till`, `won`), `muted` and `tutDone` (finished or skipped the soft opening).
 - `inkgardens-run`: the week in progress, saved each morning (`v`, `day`, `loyalty`, `till`, `earned`, `beds`, `up`, `garden`, `bucket`, `sel`). "Carry on" restarts that morning.
 - Never rename or remove a saved field. Add new fields with defaults in `restore()`. If a field's meaning changes, bump `v` and convert old runs in `loadRun()`.
 - Never reorder `PLANTS`: saved gardens and buckets refer to plants by position. Add new plants at the end. Never rename an `UPGRADES` key (`k`).
@@ -76,7 +86,8 @@ Progress is kept in the browser's localStorage. An update must never wipe or bre
 
 ## Smoke test before sharing a preview
 - The front page shows three beds growing, blooming and getting picked, and a Play button that opens the game.
-- The title shows the version and "Send feedback". A fresh player sees Open the shop; after starting a week, a refresh shows Carry on.
+- The title shows the version and "Send feedback". A fresh player sees Soft opening first; after it, Open the shop; after starting a week, a refresh shows Carry on.
+- Soft opening: Nana's tips appear one at a time with a filling ring, the ring turns into an x, and the thing she's talking about gets a dashed ring. Play it through to Monday. Pause, restart it and quit from the middle: the tip goes away.
 - Monday: the intro shows daisy and tulip and the how-to. Open the shop: six beds with two daisies and a tulip already growing, the hint line, and two seed packets.
 - Plant, water (the bar fills and drops fall), pick (the flower flies to the bucket), and sell to a customer (flowers fly to the ticket, "Sold" stamp, the till goes up).
 - Let a customer run out: "Went to Everbloom". Let a plant dry out: "Dried out". Leave a bloom: it droops, then goes to seed.

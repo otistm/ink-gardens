@@ -42,7 +42,7 @@ function drawRail(){
     const st=el.querySelector('.stamp span');
     if(st&&!S.stamped.has(id)){S.stamped.add(id);if(!RM)st.animate([{transform:'scale(2.2) rotate(-20deg)',opacity:0},{transform:'scale(.92) rotate(-11deg)',opacity:1,offset:.7},{transform:getComputedStyle(st).transform}],{duration:300,easing:'ease-in'})}
   });
-  railCan();
+  railCan();coachRedraw();
 }
 // mark who can be served from the bucket right now, and which of their flowers are ready
 function railCan(){
@@ -80,7 +80,7 @@ function sell(t,el){
   S.till+=pay;S.earned+=pay;S.dayTake+=pay;S.served++;S.did.sell=true;
   drawBucket();drawRail();hud();
   const r=el.getBoundingClientRect();floatText('+'+money(pay),r.left+r.width/2,r.top+r.height*.35);
-  addLoyalty(1+stars);snd('sell');setTimeout(()=>snd('coin'),200);haptic([12,40,12]);
+  addLoyalty(1+stars);coach('sell');snd('sell');setTimeout(()=>snd('coin'),200);haptic([12,40,12]);
 }
 function walkout(t){
   t.gone=true;t.removeAt=S.clock+1.3;S.walked++;
@@ -89,13 +89,13 @@ function walkout(t){
 }
 function tickShop(dt){
   const D=DAYS[S.day];
-  if(S.spawned<D.n&&S.clock>=S.nextAt){S.queue.push(makeCustomer());S.spawned++;S.nextAt=S.clock+D.gap*(.8+Math.random()*.4)}
+  if(!S.tut&&S.spawned<D.n&&S.clock>=S.nextAt){S.queue.push(makeCustomer());S.spawned++;S.nextAt=S.clock+D.gap*(.8+Math.random()*.4)}
   let ch=false;
   S.slots.forEach((t,i)=>{if(t&&t.removeAt!=null&&S.clock>=t.removeAt){S.slots[i]=null;ch=true}});
   while(S.queue.length){const i=S.slots.indexOf(null);if(i<0)break;S.slots[i]=S.queue.shift();ch=true;snd('ding')}
-  S.slots.forEach(t=>{if(t&&!t.done&&!t.gone){t.time-=dt;if(t.time<=0)walkout(t)}});
+  S.slots.forEach(t=>{if(t&&!t.done&&!t.gone&&!S.tut){t.time-=dt;if(t.time<=0)walkout(t)}});
   if(ch)drawRail();else railBars();
-  if(S.mode==='play'&&S.spawned>=D.n&&!S.queue.length&&S.slots.every(t=>!t))endShift();
+  if(S.mode==='play'&&!S.tut&&S.spawned>=D.n&&!S.queue.length&&S.slots.every(t=>!t))endShift();
 }
 
 /* ---------- street meter, till, floating text, toast ---------- */

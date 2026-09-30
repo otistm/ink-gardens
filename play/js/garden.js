@@ -23,6 +23,7 @@ function drawGarden(){
   }
   garden.innerHTML=h;
   for(let i=0;i<S.beds;i++)paintBed(i,true);
+  coachRedraw();
 }
 const TAG={bloom:'Pick',fade:'Fading',dead:'Clear',weed:'Pull'};
 function paintBed(i,force){
@@ -47,6 +48,7 @@ function paintBed(i,force){
 function drawTray(){
   const ps=unlocked();if(!ps.includes(S.sel))S.sel=ps[0];
   tray.innerHTML=ps.map(p=>`<button class="seed${p===S.sel?' on':''}" data-p="${p}" aria-pressed="${p===S.sel}" aria-label="${PLANTS[p].name} seeds, ${money(PLANTS[p].seed)}">${packetSVG(p)}<b>${money(PLANTS[p].seed)}</b></button>`).join('');
+  coachRedraw();
 }
 tray.addEventListener('click',e=>{
   const b=e.target.closest('.seed');if(!b||S.mode!=='play')return;
@@ -66,10 +68,10 @@ garden.addEventListener('click',e=>{
   if(el.classList.contains('locked')){snd('bad');toast('Dig more beds in the seed shop, between days');return}
   const b=S.garden[i],look=lookOf(b),r=el.getBoundingClientRect();
   if(look==='empty')plantBed(i,r);
-  else if(look==='weed'||look==='dead'){S.garden[i]=null;snd('pull');haptic(15);puff(el);paintBed(i)}
+  else if(look==='weed'||look==='dead'){S.garden[i]=null;snd('pull');haptic(15);puff(el);paintBed(i);coach('pull')}
   else if(look==='bloom'||look==='fade')pickBed(i,el);
   else if(b.w>.75){snd('bad');toast('Not thirsty yet');wiggle(el.querySelector('.plant'))}
-  else{b.w=1;b.dry=0;snd('water');haptic(8);splash(r);paintBed(i);S.did.water=true}
+  else{b.w=1;b.dry=0;snd('water');haptic(8);splash(r);paintBed(i);S.did.water=true;coach('water')}
 });
 function plantBed(i,r){
   const P=PLANTS[S.sel];let cost=P.seed;
@@ -81,14 +83,14 @@ function plantBed(i,r){
   }
   S.till-=cost;hud();
   S.garden[i]={p:S.sel,g:0,w:1,bl:0,dry:0};
-  snd('plant');haptic(10);paintBed(i);S.did.plant=true;
+  snd('plant');haptic(10);paintBed(i);S.did.plant=true;coach('plant',i);
   if(cost)floatText('-'+money(cost),r.left+r.width/2,r.top+r.height*.4,'small');
 }
 function pickBed(i,el){
   const b=S.garden[i];S.garden[i]=null;S.bucket[b.p]++;
   snd('snip');haptic(12);S.did.pick=true;
   flyIcon(b.p,el.getBoundingClientRect(),()=>{const c=bucketEl.querySelector(`[data-p="${b.p}"]`);return c?c.getBoundingClientRect():bucketEl.getBoundingClientRect()});
-  paintBed(i);drawBucket();
+  paintBed(i);drawBucket();coach('pick');
 }
 
 /* ---------- growing, drinking, blooming and fading, every frame ---------- */
@@ -98,10 +100,10 @@ function tickGarden(dt){
     const b=S.garden[i];if(!b||b.weed||b.dead){continue}
     b.w=Math.max(0,b.w-dt/PLANTS[b.p].thirst);
     if(b.g<1){
-      if(b.w>0){b.g=Math.min(1,b.g+dt*g/PLANTS[b.p].grow);if(b.g>=1){b.bl=bloomTime(b.p);snd('bloom')}}
-      else if((b.dry+=dt)>8){b.dead=true;snd('wilt');bedFloat(i,'Dried out')}
+      if(b.w>0){b.g=Math.min(1,b.g+dt*g/PLANTS[b.p].grow);if(b.g>=1){b.bl=bloomTime(b.p);snd('bloom');coach('bloom')}}
+      else if((b.dry+=dt)>8&&!S.tut){b.dead=true;snd('wilt');bedFloat(i,'Dried out')}
     }else{
-      b.bl-=dt*(b.w>0?1:2.2);
+      if(!S.tut)b.bl-=dt*(b.w>0?1:2.2);
       if(b.bl<=0){b.dead=true;snd('wilt');bedFloat(i,'Went to seed')}
     }
     paintBed(i);

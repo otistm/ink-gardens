@@ -21,7 +21,7 @@ function startShift(){
 function endShift(){if(S.mode!=='play')return;S.mode='ending';setTimeout(endDay,800)}
 // Monday's hints: one line above the seed tray, naming the next useful thing to do until you've done each once.
 function hints(){
-  if(S.day>0)return;
+  if(S.day>0||S.tut)return;
   const live=S.garden.filter(b=>b&&!b.weed&&!b.dead);let h='';
   if(!S.did.water&&live.some(b=>b.g<1&&b.w<.3))h='A plant is thirsty. Tap it to water it.';
   else if(!S.did.pick&&live.some(b=>b.g>=1))h='Something is in bloom. Tap it to pick it.';
@@ -46,12 +46,16 @@ function bestLine(){
   return `Best: reached ${DAYNAMES[B.day]}, ${money(B.earned)} in sales`;
 }
 function titleScreen(){
-  S.mode='menu';const R=loadRun();
+  leaveTutorial();S.mode='menu';const R=loadRun();
+  // a brand-new player is offered the soft opening first; everyone else can replay it from a quiet button
+  const fresh=!R&&!BEST.tutDone&&!BEST.best;
   show(`<div class="logo">${bedSVG(0,'bloom',2.4)}</div>
     <h1>Ink Gardens</h1>
     <p class="tag">Grow flowers. Sell them fresh. Beat the plastic place across the street.</p>
     ${R?`<button class="btn" data-act="carry">Carry on: ${DAYNAMES[R.day]}</button><button class="btn quiet" data-act="new">Start a new week</button>`
+      :fresh?`<button class="btn" data-act="tut">Soft opening</button><p class="kick soft">A short, calm evening with Nana to learn the ropes.</p><button class="btn quiet" data-act="new">Skip to Monday</button>`
       :`<button class="btn" data-act="new">Open the shop</button>`}
+    ${fresh?'':`<button class="btn quiet" data-act="tut">Play the soft opening</button>`}
     <p class="best">${bestLine()}</p>
     <p class="ver">Version ${VERSION}${ONLINE?' · ':''}${feedbackLink()}</p>`);
   if(!RM){const looks=['seed','sprout','bud','bloom'],box=scr.querySelector('.logo');let k=0;
@@ -119,7 +123,7 @@ function pauseScreen(){
   if(S.mode!=='play')return;S.mode='paused';
   show(`<h1>Paused</h1><p class="story">The garden waits for you. The customers do too, for now.</p>
     <button class="btn" data-act="resume">Resume</button>
-    <button class="btn quiet" data-act="retry">Restart ${DAYNAMES[S.day]}</button>
+    <button class="btn quiet" data-act="retry">Restart ${S.tut?'the soft opening':DAYNAMES[S.day]}</button>
     <button class="btn quiet" data-act="sound">Sound: ${S.muted?'off':'on'}</button>
     <button class="btn quiet" data-act="menu">Quit to the menu</button>
     <p class="ver">${feedbackLink()}</p>`);
@@ -127,14 +131,15 @@ function pauseScreen(){
 scr.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act;snd('pick');
   if(a==='new'){newWeek();introScreen()}
+  else if(a==='tut')startTutorial();
   else if(a==='carry'){const R=loadRun();if(R){restore(R);introScreen()}else{newWeek();introScreen()}}
   else if(a==='start')startShift();
   else if(a==='shop')shopScreen();
   else if(a==='dig'){S.till-=BED_COST[S.beds];S.beds++;snd('coin');shopScreen()}
   else if(a==='up'){const u=UPGRADES.find(x=>x.k===b.dataset.k);if(u&&!S.up[u.k]&&S.till>=u.cost){S.till-=u.cost;S.up[u.k]=true;snd('coin');shopScreen()}}
   else if(a==='next'){S.day++;introScreen()}
-  else if(a==='retry'){restore(S.morning);startShift()}
-  else if(a==='resume'){hide();S.mode='play';last=performance.now()}
+  else if(a==='retry'){if(S.tut){hideCoach();startTutorial()}else{restore(S.morning);startShift()}}
+  else if(a==='resume'){hide();S.mode='play';last=performance.now();coachRedraw()}
   else if(a==='sound'){S.muted=!S.muted;BEST.muted=S.muted;saveBest();b.textContent='Sound: '+(S.muted?'off':'on')}
   else if(a==='menu')titleScreen();
   else if(a==='feedback')showFeedback();
@@ -144,7 +149,7 @@ scr.addEventListener('click',e=>{
 let last=performance.now(),hintT=0;
 function loop(now){
   const dt=Math.min(.1,(now-last)/1000);last=now;
-  if(S.mode==='play'){S.clock+=dt;tickGarden(dt);tickShop(dt);if((hintT+=dt)>.4){hintT=0;hints()}}
+  if(S.mode==='play'){S.clock+=dt;tickGarden(dt);tickShop(dt);if((hintT+=dt)>.4){hintT=0;hints();coach('tick')}}
   requestAnimationFrame(loop);
 }
 function start(){

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+- A soft opening: a short, calm evening with Nana before the week starts. She walks you through planting, watering, picking, selling, pulling a weed and a two-flower order, one tip at a time.
+- Nothing can go wrong in it. Customers wait as long as you like, plants never dry out and blooms never fade.
+- Each tip has a ring that fills while you read, then turns into an x to close it, like Ink Crossing. Whatever Nana is talking about gets a dashed ring around it.
+- New players see Soft opening first on the title screen, with Skip to Monday underneath. Everyone else can replay it from Play the soft opening.
+- Doing things out of order never leaves you stuck: Nana just moves on.
+
 ## 0.1.1
 - The lettering now matches the other ink games: Fraunces for titles and numbers, and Figtree for everything else.
 
